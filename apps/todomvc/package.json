@@ -1,0 +1,17 @@
+{
+  "name": "todomvc",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "VITE_LIVESTORE_SYNC_URL=http://localhost:5173 vite dev",
+    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-todomvc.threepointone.workers.dev vite build && wrangler deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "todomvc-app-css": "^2.4.3"
+  }
+}

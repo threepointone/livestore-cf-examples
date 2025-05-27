@@ -1,0 +1,37 @@
+{
+  "name": "livestore-cf-examples",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Examples of using livestore with cloudflare workers",
+  "keywords": [],
+  "author": "Sunil Pai <spai@cloudflare.com>",
+  "license": "ISC",
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.2.4",
+    "@cloudflare/workers-types": "^4.20250525.0",
+    "@livestore/adapter-web": "0.3.0",
+    "@livestore/devtools-vite": "0.3.0",
+    "@livestore/livestore": "0.3.0",
+    "@livestore/peer-deps": "0.3.0",
+    "@livestore/react": "0.3.0",
+    "@livestore/sync-cf": "0.3.0",
+    "@livestore/wa-sqlite": "1.0.5-dev.2",
+    "@overengineering/fps-meter": "0.1.2",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-devtools-json": "^0.1.0",
+    "wrangler": "^4.16.1"
+  },
+  "packageManager": "npm@11.1.0"
+}
