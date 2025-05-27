@@ -8,8 +8,8 @@ import { events, tables } from "../livestore/schema.js";
 const incompleteCount$ = queryDb(
   tables.todos.count().where({ completed: false, deletedAt: null }),
   {
-    label: "incompleteCount",
-  },
+    label: "incompleteCount"
+  }
 );
 
 export const Footer: React.FC = () => {

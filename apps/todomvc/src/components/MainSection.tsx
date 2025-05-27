@@ -10,10 +10,10 @@ const visibleTodos$ = queryDb(
     const { filter } = get(uiState$);
     return tables.todos.where({
       deletedAt: null,
-      completed: filter === "all" ? undefined : filter === "completed",
+      completed: filter === "all" ? undefined : filter === "completed"
     });
   },
-  { label: "visibleTodos" },
+  { label: "visibleTodos" }
 );
 
 export const MainSection: React.FC = () => {
@@ -24,9 +24,9 @@ export const MainSection: React.FC = () => {
       store.commit(
         completed
           ? events.todoUncompleted({ id })
-          : events.todoCompleted({ id }),
+          : events.todoCompleted({ id })
       ),
-    [store],
+    [store]
   );
 
   const visibleTodos = store.useQuery(visibleTodos$);
@@ -48,7 +48,7 @@ export const MainSection: React.FC = () => {
                 className="destroy"
                 onClick={() =>
                   store.commit(
-                    events.todoDeleted({ id: todo.id, deletedAt: new Date() }),
+                    events.todoDeleted({ id: todo.id, deletedAt: new Date() })
                   )
                 }
               ></button>

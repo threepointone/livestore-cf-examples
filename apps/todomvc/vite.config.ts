@@ -9,6 +9,6 @@ export default defineConfig({
     devtoolsJson(),
     react(),
     cloudflare(),
-    livestoreDevtoolsPlugin({ schemaPath: "./src/livestore/schema.ts" }),
-  ],
+    livestoreDevtoolsPlugin({ schemaPath: "./src/livestore/schema.ts" })
+  ]
 });

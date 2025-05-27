@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
   const todoCreated = () =>
     store.commit(
       events.todoCreated({ id: crypto.randomUUID(), text: newTodoText }),
-      events.uiStateSet({ newTodoText: "" }),
+      events.uiStateSet({ newTodoText: "" })
     );
 
   return (

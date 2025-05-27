@@ -6,7 +6,7 @@ export class WebSocketServer extends makeDurableObject({
   },
   onPull: async (message) => {
     console.log("onPull", message);
-  },
+  }
 }) {}
 
 export default makeWorker({
@@ -14,5 +14,5 @@ export default makeWorker({
     if (payload?.authToken !== "insecure-token-change-me") {
       throw new Error("Invalid auth token");
     }
-  },
+  }
 });

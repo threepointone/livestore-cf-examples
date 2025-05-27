@@ -25,7 +25,7 @@ const storeId = getStoreId();
 const adapter = makePersistedAdapter({
   storage: { type: "opfs" },
   worker: LiveStoreWorker,
-  sharedWorker: LiveStoreSharedWorker,
+  sharedWorker: LiveStoreSharedWorker
 });
 
 export const App: React.FC = () => (
