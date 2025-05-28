@@ -46,6 +46,7 @@
   },
   "scripts": {
     "start": "VITE_LIVESTORE_SYNC_URL=http://localhost:5173 vite dev",
-    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-linearlite.threepointone.workers.dev vite build && wrangler deploy"
+    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-linearlite.threepointone.workers.dev vite build && wrangler deploy",
+    "clean": "rm -rf node_modules/.vite .wrangler"
   }
 }

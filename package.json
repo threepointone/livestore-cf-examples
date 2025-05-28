@@ -10,6 +10,9 @@
   "workspaces": [
     "apps/*"
   ],
+  "scripts": {
+    "postinstall": "patch-package"
+  },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.2.4",
     "@cloudflare/workers-types": "^4.20250525.0",
@@ -25,6 +28,7 @@
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.5.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

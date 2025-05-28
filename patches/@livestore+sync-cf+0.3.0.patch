@@ -1,0 +1,49 @@
+diff --git a/node_modules/@livestore/sync-cf/dist/cf-worker/durable-object.js b/node_modules/@livestore/sync-cf/dist/cf-worker/durable-object.js
+index b7ebe01..a034396 100644
+--- a/node_modules/@livestore/sync-cf/dist/cf-worker/durable-object.js
++++ b/node_modules/@livestore/sync-cf/dist/cf-worker/durable-object.js
+@@ -46,7 +46,7 @@ export const makeDurableObject = (options) => {
+             this.ctx.acceptWebSocket(server);
+             this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair(encodeIncomingMessage(WSMessage.Ping.make({ requestId: 'ping' })), encodeOutgoingMessage(WSMessage.Pong.make({ requestId: 'ping' }))));
+             const colSpec = makeColumnSpec(eventlogTable.sqliteDef.ast);
+-            this.env.DB.exec(`CREATE TABLE IF NOT EXISTS ${storage.dbName} (${colSpec}) strict`);
++            this.ctx.storage.sql.exec(`CREATE TABLE IF NOT EXISTS ${storage.dbName} (${colSpec}) strict`);
+             return new Response(null, {
+                 status: 101,
+                 webSocket: client,
+@@ -210,10 +210,10 @@ export const makeDurableObject = (options) => {
+ };
+ const makeStorage = (ctx, env, storeId) => {
+     const dbName = `eventlog_${PERSISTENCE_FORMAT_VERSION}_${toValidTableName(storeId)}`;
+-    const execDb = (cb) => Effect.tryPromise({
+-        try: () => cb(env.DB),
++    const execDb = (cb) => Effect.try({
++        try: () => cb(ctx.storage.sql),
+         catch: (error) => new UnexpectedError({ cause: error, payload: { dbName } }),
+-    }).pipe(Effect.map((_) => _.results), Effect.withSpan('@livestore/sync-cf:durable-object:execDb'));
++    }).pipe(Effect.map((_) => _), Effect.withSpan('@livestore/sync-cf:durable-object:execDb'));
+     // const getHead: Effect.Effect<EventSequenceNumber.GlobalEventSequenceNumber, UnexpectedError> = Effect.gen(
+     //   function* () {
+     //     const result = yield* execDb<{ seqNum: EventSequenceNumber.GlobalEventSequenceNumber }>((db) =>
+@@ -226,7 +226,7 @@ const makeStorage = (ctx, env, storeId) => {
+         const whereClause = cursor === undefined ? '' : `WHERE seqNum > ${cursor}`;
+         const sql = `SELECT * FROM ${dbName} ${whereClause} ORDER BY seqNum ASC`;
+         // TODO handle case where `cursor` was not found
+-        const rawEvents = yield* execDb((db) => db.prepare(sql).all());
++        const rawEvents = yield* execDb((db) => [...db.exec(sql)]);
+         const events = Schema.decodeUnknownSync(Schema.Array(eventlogTable.rowSchema))(rawEvents).map(({ createdAt, ...eventEncoded }) => ({
+             eventEncoded,
+             metadata: Option.some({ createdAt }),
+@@ -256,10 +256,8 @@ const makeStorage = (ctx, env, storeId) => {
+                 event.clientId,
+                 event.sessionId,
+             ]);
+-            yield* execDb((db) => db
+-                .prepare(sql)
+-                .bind(...params)
+-                .run());
++            yield* execDb((db) => [...db
++                .exec(sql, ...params)]);
+         }
+     }).pipe(UnexpectedError.mapToUnexpectedError);
+     const resetStore = Effect.gen(function* () {

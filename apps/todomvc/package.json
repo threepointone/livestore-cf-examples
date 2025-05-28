@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "VITE_LIVESTORE_SYNC_URL=http://localhost:5173 vite dev",
-    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-todomvc.threepointone.workers.dev vite build && wrangler deploy"
+    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-todomvc.threepointone.workers.dev vite build && wrangler deploy",
+    "clean": "rm -rf node_modules/.vite .wrangler"
   },
   "keywords": [],
   "author": "",
