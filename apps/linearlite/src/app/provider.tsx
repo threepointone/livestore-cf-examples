@@ -9,7 +9,6 @@ import LiveStoreSharedWorker from "@livestore/adapter-web/shared-worker?sharedwo
 import React from "react";
 import { unstable_batchedUpdates as batchUpdates } from "react-dom";
 import { useNavigate } from "react-router-dom";
-import { getStoreId } from "@/utils/get-store-id";
 
 const resetPersistence =
   import.meta.env.DEV &&
@@ -25,7 +24,7 @@ if (resetPersistence) {
   );
 }
 
-// const storeId = getStoreId();
+const storeId = "test-store-id";
 
 const adapter = makePersistedAdapter({
   worker: LiveStoreWorker,
@@ -67,8 +66,8 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
       adapter={adapter}
       renderLoading={renderBootStatus}
       batchUpdates={batchUpdates}
-      // storeId={storeId}
-      // syncPayload={{ authToken: "insecure-token-change-me" }}
+      storeId={storeId}
+      syncPayload={{ authToken: "insecure-token-change-me" }}
     >
       <MenuContext.Provider value={{ showMenu, setShowMenu }}>
         <NewIssueModalContext.Provider
