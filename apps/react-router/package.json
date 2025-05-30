@@ -1,0 +1,24 @@
+{
+  "name": "livestore-react-router",
+  "version": "0.0.0",
+  "scripts": {
+    "typecheck": "react-router typegen && tsc -b",
+    "start": "VITE_LIVESTORE_SYNC_URL=http://localhost:5173 react-router dev",
+    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-react-router.threepointone.workers.dev react-router build && wrangler deploy",
+    "clean": "rm -rf node_modules/.vite .wrangler"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "isbot": "^5.1.28",
+    "react-router": "^7.6.1"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.6.1",
+    "@tailwindcss/vite": "^4.1.8",
+    "tailwindcss": "^4.1.8",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
