@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "typecheck": "react-router typegen && tsc -b",
+    "build": "VITE_LIVESTORE_SYNC_URL=http://livestore-react-router.threepointone.workers.dev react-router build",
     "start": "VITE_LIVESTORE_SYNC_URL=http://localhost:5173 react-router dev",
-    "deploy": "VITE_LIVESTORE_SYNC_URL=http://livestore-react-router.threepointone.workers.dev react-router build && wrangler deploy",
-    "clean": "rm -rf node_modules/.vite .wrangler"
+    "deploy": "npm run build && wrangler deploy",
+    "clean": "rm -rf node_modules/.vite .wrangler .react-router"
   },
   "keywords": [],
   "author": "",

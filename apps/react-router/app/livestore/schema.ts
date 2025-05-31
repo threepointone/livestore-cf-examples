@@ -32,9 +32,13 @@ export const events = {
 // Materializers to handle counter events
 const materializers = State.SQLite.materializers(events, {
   "v1.CounterIncremented": ({ amount }) =>
-    tables.counter.update({ value: amount }).where({ id: "main" }),
+    tables.counter
+      .insert({ id: "main", value: amount })
+      .onConflict("id", "replace"),
   "v1.CounterDecremented": ({ amount }) =>
-    tables.counter.update({ value: -amount }).where({ id: "main" })
+    tables.counter
+      .insert({ id: "main", value: amount })
+      .onConflict("id", "replace")
 });
 
 const state = State.SQLite.makeState({ tables, materializers });

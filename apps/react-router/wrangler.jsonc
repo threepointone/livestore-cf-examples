@@ -26,7 +26,8 @@
   //   }
   // ],
   "vars": {
-    "VALUE_FROM_CLOUDFLARE": "livestore ⨉ react-router"
+    "VALUE_FROM_CLOUDFLARE": "livestore ⨉ react-router",
+    "VITE_LIVESTORE_SYNC_URL": "http://localhost:5173" // this gets replaced for prod builds
     // should be set via CF dashboard (as secret)
     // "ADMIN_SECRET": "..."
   }
