@@ -43,15 +43,16 @@ const livestoreWorker = makeWorker({
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (
-      url.pathname.startsWith("/websocket")
-      // || url.pathname.startsWith("/_livestore")
-    ) {
+    if (url.pathname.startsWith("/websocket")) {
       return livestoreWorker.fetch(request, env, ctx);
+    } else if (url.pathname.startsWith("/_livestore")) {
+      return new Response("Livestore devtools are disabled for this app", {
+        status: 404
+      });
+    } else {
+      return requestHandler(request, {
+        cloudflare: { env, ctx }
+      });
     }
-
-    return requestHandler(request, {
-      cloudflare: { env, ctx }
-    });
   }
 } satisfies ExportedHandler<Env>;

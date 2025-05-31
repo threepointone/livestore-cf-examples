@@ -3,71 +3,38 @@ import {
   makeSchema,
   Schema,
   SessionIdSymbol,
-  State,
+  State
 } from "@livestore/livestore";
 
-// You can model your state as SQLite tables (https://dev.docs.livestore.dev/reference/state/sqlite-schema)
+// Define a simple counter table
 export const tables = {
-  todos: State.SQLite.table({
-    name: "todos",
+  counter: State.SQLite.table({
+    name: "counter",
     columns: {
       id: State.SQLite.text({ primaryKey: true }),
-      text: State.SQLite.text({ default: "" }),
-      completed: State.SQLite.boolean({ default: false }),
-      deletedAt: State.SQLite.integer({
-        nullable: true,
-        schema: Schema.DateFromNumber,
-      }),
-    },
-  }),
-  // Client documents can be used for local-only state (e.g. form inputs)
-  uiState: State.SQLite.clientDocument({
-    name: "uiState",
-    schema: Schema.Struct({
-      newTodoText: Schema.String,
-      filter: Schema.Literal("all", "active", "completed"),
-    }),
-    default: { id: SessionIdSymbol, value: { newTodoText: "", filter: "all" } },
-  }),
+      value: State.SQLite.integer({ default: 0 })
+    }
+  })
 };
 
-// Events describe data changes (https://dev.docs.livestore.dev/reference/events)
+// Events for incrementing and decrementing the counter
 export const events = {
-  todoCreated: Events.synced({
-    name: "v1.TodoCreated",
-    schema: Schema.Struct({ id: Schema.String, text: Schema.String }),
+  counterIncremented: Events.synced({
+    name: "v1.CounterIncremented",
+    schema: Schema.Struct({ amount: Schema.Number })
   }),
-  todoCompleted: Events.synced({
-    name: "v1.TodoCompleted",
-    schema: Schema.Struct({ id: Schema.String }),
-  }),
-  todoUncompleted: Events.synced({
-    name: "v1.TodoUncompleted",
-    schema: Schema.Struct({ id: Schema.String }),
-  }),
-  todoDeleted: Events.synced({
-    name: "v1.TodoDeleted",
-    schema: Schema.Struct({ id: Schema.String, deletedAt: Schema.Date }),
-  }),
-  todoClearedCompleted: Events.synced({
-    name: "v1.TodoClearedCompleted",
-    schema: Schema.Struct({ deletedAt: Schema.Date }),
-  }),
-  uiStateSet: tables.uiState.set,
+  counterDecremented: Events.synced({
+    name: "v1.CounterDecremented",
+    schema: Schema.Struct({ amount: Schema.Number })
+  })
 };
 
-// Materializers are used to map events to state (https://dev.docs.livestore.dev/reference/state/materializers)
+// Materializers to handle counter events
 const materializers = State.SQLite.materializers(events, {
-  "v1.TodoCreated": ({ id, text }) =>
-    tables.todos.insert({ id, text, completed: false }),
-  "v1.TodoCompleted": ({ id }) =>
-    tables.todos.update({ completed: true }).where({ id }),
-  "v1.TodoUncompleted": ({ id }) =>
-    tables.todos.update({ completed: false }).where({ id }),
-  "v1.TodoDeleted": ({ id, deletedAt }) =>
-    tables.todos.update({ deletedAt }).where({ id }),
-  "v1.TodoClearedCompleted": ({ deletedAt }) =>
-    tables.todos.update({ deletedAt }).where({ completed: true }),
+  "v1.CounterIncremented": ({ amount }) =>
+    tables.counter.update({ value: amount }).where({ id: "main" }),
+  "v1.CounterDecremented": ({ amount }) =>
+    tables.counter.update({ value: -amount }).where({ id: "main" })
 });
 
 const state = State.SQLite.makeState({ tables, materializers });
